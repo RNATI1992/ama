@@ -10,9 +10,15 @@ Preguntas:
 
 ```docker-compose up -d```
 
+See docker-compose.yml ... mirar los puertos abiertos. Tener cuidado cuando estas conectado al internet.
+
+See open ports:
+sudo netstat -tulpn | grep -i listen
+
+
 # connect to container
 ```docker inspect ama_mariadb | grep -i ipad```
-```mysql connect --host=172.28.0.2 --user=root amvara --password=changeme```
+```mysql --host=172.30.0.2 --user=root amvara --password=changeme```
 
 # Access Control and Account Management
 
@@ -73,10 +79,33 @@ mysql> show tables;
 +---------------------------+
 30 rows in set (0.00 sec)
 ```
+mysql> select host, user  from user;
++-----------+--------+
+| host      | user   |
++-----------+--------+
+| %         | amvara |
+| %         | root   |
+| localhost | root   |
++-----------+--------+
+
+mysql> update mysql.user set host='localhost' where host = '%';
+ERROR 1062 (23000): Duplicate entry 'localhost-root' for key 'PRIMARY'
+mysql> delete from mysql.user where host = '%';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select host,user from  mysql.user;
++-----------+--------+
+| host      | user   |
++-----------+--------+
+| localhost | amvara |
+| localhost | root   |
++-----------+--------+
+2 rows in set (0.00 sec)
+
 
 # Create a user
 
-select * from mysql.user;
+select host,user from mysql.user;
 select * from mysql.db;
 use information_schema;
 select * from USER_PRIVILEGES;
@@ -106,8 +135,22 @@ CREATE USER 'amvara_dev'@'localhost'
 SHOW GRANTS FOR 'root'@'localhost';
 SHOW PRIVILEGES;
 
+mysql> GRANT ALL PRIVILEGES ON amvara2.* TO 'foo2'@'test' WITH GRANT OPTION;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql> select * from mysql.db;
++------+---------+--------+-------------+-------------+-------------+-------------+-------------+-----------+------------+-----------------+------------+------------+-----------------------+------------------+------------------+----------------+---------------------+--------------------+--------------+------------+--------------+
+| Host | Db      | User   | Select_priv | Insert_priv | Update_priv | Delete_priv | Create_priv | Drop_priv | Grant_priv | References_priv | Index_priv | Alter_priv | Create_tmp_table_priv | Lock_tables_priv | Create_view_priv | Show_view_priv | Create_routine_priv | Alter_routine_priv | Execute_priv | Event_priv | Trigger_priv |
++------+---------+--------+-------------+-------------+-------------+-------------+-------------+-----------+------------+-----------------+------------+------------+-----------------------+------------------+------------------+----------------+---------------------+--------------------+--------------+------------+--------------+
+| %    | amvara  | amvara | Y           | Y           | Y           | Y           | Y           | Y         | N          | Y               | Y          | Y          | Y                     | Y                | Y                | Y              | Y                   | Y                  | Y            | Y          | Y            |
+| test | amvara  | foo2   | Y           | Y           | Y           | Y           | Y           | Y         | Y          | Y               | Y          | Y          | Y                     | Y                | Y                | Y              | Y                   | Y                  | Y            | Y          | Y            |
+| test | amvara2 | foo2   | Y           | Y           | Y           | Y           | Y           | Y         | Y          | Y               | Y          | Y          | Y                     | Y                | Y                | Y              | Y                   | Y                  | Y            | Y          | Y            |
++------+---------+--------+-------------+-------------+-------------+-------------+-------------+-----------+------------+-----------------+------------+------------+-----------------------+------------------+------------------+----------------+---------------------+--------------------+--------------+------------+--------------+
+3 rows in set (0.00 sec)
+
+
 https://mariadb.com/kb/en/grant/
 
-
+mysql --host=172.31.0.2 --user=root --password=changeme < test_01.sql 
 # notes
 
