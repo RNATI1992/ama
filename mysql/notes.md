@@ -78,7 +78,7 @@ mysql> show tables;
 | user                      |
 +---------------------------+
 30 rows in set (0.00 sec)
-```
+
 mysql> select host, user  from user;
 +-----------+--------+
 | host      | user   |
@@ -101,10 +101,11 @@ mysql> select host,user from  mysql.user;
 | localhost | root   |
 +-----------+--------+
 2 rows in set (0.00 sec)
-
+```
 
 # Create a user
 
+```
 select host,user from mysql.user;
 select * from mysql.db;
 use information_schema;
@@ -115,7 +116,7 @@ select * from information_schema.USER_PRIVILEGES;
 CREATE USER foo2@test IDENTIFIED BY 'password';
 
 SHOW CREATE USER 'foo2'@'test';
-
+```
 
 ```
 CREATE USER foo3@test IDENTIFIED BY 'password
@@ -132,6 +133,7 @@ CREATE USER 'amvara_dev'@'localhost'
 ```
 
 
+```
 SHOW GRANTS FOR 'root'@'localhost';
 SHOW PRIVILEGES;
 
@@ -147,7 +149,7 @@ mysql> select * from mysql.db;
 | test | amvara2 | foo2   | Y           | Y           | Y           | Y           | Y           | Y         | Y          | Y               | Y          | Y          | Y                     | Y                | Y                | Y              | Y                   | Y                  | Y            | Y          | Y            |
 +------+---------+--------+-------------+-------------+-------------+-------------+-------------+-----------+------------+-----------------+------------+------------+-----------------------+------------------+------------------+----------------+---------------------+--------------------+--------------+------------+--------------+
 3 rows in set (0.00 sec)
-
+```
 
 https://mariadb.com/kb/en/grant/
 
