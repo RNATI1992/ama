@@ -17,8 +17,11 @@ sudo netstat -tulpn | grep -i listen
 
 
 # connect to container
+
+Inspect IP address:
 ```docker inspect ama_mariadb | grep -i ipad```
 
+Connect
 ```mysql --host=172.30.0.2 --user=root amvara --password=changeme```
 
 # Access Control and Account Management
